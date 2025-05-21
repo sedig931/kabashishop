@@ -26,7 +26,7 @@
           >
             <img
               class="cci-pic-img ms-1"
-              :src="`https://severkbashi.netlify.app/uploads/${product.imgs[0]}`"
+              :src="`${this.SERVER_URL}/uploads/${product.imgs[0]}`"
             />
             <span class="cci-name-span"> {{ product.name }} </span>
             <div class="cci-quantity-div">
@@ -59,7 +59,7 @@
           ) + " SDG"
         }}</span>
         <button
-          @click="this.confirmPressed"
+          @click="this.confirmPressedLocal"
           class="btn-confirm btn-cancel-confirm"
         >
           Submit
@@ -87,6 +87,8 @@ export default {
   components: { CartPill },
   data() {
     return {
+      // SERVER_URL: "http://localhost:300",
+      SERVER_URL: "https://severkbashi.netlify.app/",
       cart: { products: [] },
       showCartPill: false,
       showSingleTrash: null,
@@ -176,6 +178,44 @@ export default {
         }
       } catch (err) {
         console.log(err.message);
+      }
+    },
+    confirmPressedLocal() {
+      if (this.activeUser && this.cartedProducts.length > 0) {
+        const newCart = {};
+        newCart.customerID = this.activeUser._id;
+        newCart.products = this.cartedProducts;
+        newCart.uid = String(Math.floor(new Date().valueOf() * Math.random()));
+        newCart.delevnum = Math.floor(Math.random() * 90) + 10;
+
+        newCart.userName = this.activeUser.fname;
+        newCart.userEmail = this.activeUser.email;
+        // this.cart._id = "123";
+        this.cart = newCart;
+        this.showCartPill = true;
+        const customerCarts = JSON.parse(
+          localStorage.getItem("localactiveuser")
+        ).carts;
+        customerCarts.push(this.cart);
+        localStorage.setItem(
+          "localactiveuser",
+          JSON.stringify({
+            _id: this.activeUser._id,
+            fname: this.activeUser.fname,
+            email: this.activeUser.email,
+            carts: customerCarts,
+          })
+        );
+
+        this.$emit("cartConfirmed");
+      } else {
+        if (this.cartedProducts.length > 0) {
+          // console.log("no user, go to login page..");
+          this.$router.push({
+            name: "loginCustomer",
+            // params: { id: this.customer._id, lngname: this.lng.name },
+          });
+        }
       }
     },
     hideCustomerCart(e) {

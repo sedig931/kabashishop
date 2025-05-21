@@ -1,5 +1,5 @@
-// const SERVER_URL = 'http://localhost:300';
-const SERVER_URL = 'https://severkbashi.netlify.app/api';
+// export const SERVER_URL = 'http://localhost:300';
+export const SERVER_URL = 'https://severkbashi.netlify.app/api';
 
 export const addProduct = async function (product) {
     try {

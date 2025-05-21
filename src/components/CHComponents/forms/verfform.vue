@@ -119,8 +119,11 @@ export default {
           this.successVerf = true;
           if (!this.firstSuccess) {
             this.firstSuccess = true;
-            // console.log("here just once..");
-            this.$emit("correctVerfi");
+            // uncommint this when its live work with server..;
+            // this.$emit("correctVerfi");
+            console.log(
+              "correct number ! , but its unavalibal now , just log in"
+            );
           }
           //
         } else {

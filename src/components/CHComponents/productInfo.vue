@@ -12,9 +12,15 @@
           :key="index"
           v-show="this.activeImgInfo === index"
         >
+          <div v-if="!this.imgloaded[index]" class="loading-img-div flex-row">
+            <i class="bi bi-file-image file-image-icon flex-row"></i>
+          </div>
           <img
+            v-show="this.imgloaded[index]"
+            :id="index"
+            :onload="this.imgloadedfun"
             class="single-img"
-            :src="`http://localhost:300/uploads/${img}`"
+            :src="`${this.SERVER_URL}/uploads/${img}`"
             alt=""
           />
           <div
@@ -22,7 +28,7 @@
             v-show="this.cardItem.imgs.length > 1"
           >
             <i
-              class="bi bi-caret-left icon-left-right flex-row"
+              class="bi bi-caret-left-fill icon-left-right flex-row"
               @click="
                 this.activeImgInfo > 0
                   ? this.activeImgInfo--
@@ -31,7 +37,7 @@
             >
             </i>
             <i
-              class="bi bi-caret-right icon-left-right flex-row"
+              class="bi bi-caret-right-fill icon-left-right flex-row"
               @click="
                 this.activeImgInfo + 1 < this.cardItem.imgs.length
                   ? this.activeImgInfo++
@@ -87,11 +93,17 @@ export default {
   components: {},
   data() {
     return {
+      // SERVER_URL: "http://localhost:300",
+      SERVER_URL: "https://severkbashi.netlify.app/",
       activeImgInfo: 0,
+      imgloaded: Array(this.cardItem.imgs.length - 1),
       //propreties
     };
   },
   methods: {
+    imgloadedfun(e) {
+      this.imgloaded[Number(e.target.id)] = true;
+    },
     showHideCardInfo(e) {
       e.target !== document.querySelector(".cart-item-info-div")
         ? null
@@ -112,6 +124,9 @@ export default {
         .querySelector(".inner-card-item-info-div")
         .classList.remove("hidden-item");
     }, 5);
+    for (let i = 0; i < this.imgloaded.length; i++) {
+      this.imgloaded[i] = false;
+    }
   },
 };
 </script>
@@ -176,13 +191,15 @@ export default {
 }
 .icon-left-right {
   padding: 3px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   border-radius: 50%;
   margin: 0 10px 0 10px;
-  padding: 2px;
+  padding: 3px;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 0px 0.5px 0.5px rgb(221, 221, 221);
+  font-size: 13px;
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0px 0px 3px 0.5px rgb(200, 200, 200);
 }
 .name-disc-div {
   flex: 0.3;
@@ -238,6 +255,17 @@ export default {
 .btn-add-to-cart-info {
   width: 170px;
 }
+.loading-img-div {
+  width: 80%;
+  height: 350px;
+  /* width: 100%; */
+  border-radius: 7px;
+  background-color: rgba(232, 231, 231, 0.4);
+}
+.file-image-icon {
+  font-size: 120px;
+  color: rgb(94, 94, 94, 0.6);
+}
 @media (min-height: 790px) and (max-height: 1000px) {
   .single-img {
     max-height: 350px;
@@ -262,6 +290,12 @@ export default {
 @media (max-width: 495px) {
   .single-img {
     max-height: 250px;
+  }
+  .loading-img-div {
+    height: 350px;
+  }
+  .file-image-icon {
+    font-size: 80px;
   }
 }
 </style>

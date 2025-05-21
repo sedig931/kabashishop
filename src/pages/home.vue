@@ -4,7 +4,7 @@
       :cartedProductsLength="this.cartedProducts.length"
       @showCustomerCart="this.toggleCustomerCart"
       @showCustomerPills="toggleCustomerPills"
-      @logoutNow="this.logout"
+      @logoutNow="this.logoutlocal"
       @filterProducts="this.filterProducts"
       :loggedIn="this.activeUser ? true : false"
     />
@@ -122,6 +122,9 @@ export default {
     cartConfirmed() {
       localStorage.setItem("customer-cart", JSON.stringify([]));
       this.cartedProducts = [];
+      this.$router.push({
+        name: "home",
+      });
     },
     addProductToCart(proID) {
       if (
@@ -152,7 +155,7 @@ export default {
         this.copyProducts = this.products;
 
         this.initCustomerCart();
-        console.log(this.products);
+        // console.log(this.products);
       } catch (error) {
         console.log(error);
       }
@@ -202,9 +205,19 @@ export default {
         console.log(err.message);
       }
     },
+    logoutlocal() {
+      localStorage.removeItem("localactiveuser");
+      this.activeUser = null;
+    },
+    initLocalUser() {
+      if (JSON.parse(localStorage.getItem("localactiveuser"))) {
+        this.activeUser = JSON.parse(localStorage.getItem("localactiveuser"));
+      }
+    },
   },
   mounted() {
     // this.initAciveUser();
+    this.initLocalUser();
     this.initProducts();
   },
 };

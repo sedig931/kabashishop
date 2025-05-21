@@ -104,7 +104,7 @@
 </template>
 <script>
 // import component files..
-import { getPills } from "../../modal/modal.js";
+import { getPills, SERVER_URL } from "../../modal/modal.js";
 export default {
   props: ["cartedProductsLength", "loggedIn"],
   components: {},
@@ -132,7 +132,7 @@ export default {
     },
     async checkPills() {
       try {
-        const user = await fetch("http://localhost:300/login/active/user", {
+        const user = await fetch(`${SERVER_URL}/login/active/user`, {
           credentials: "include",
           method: "GET",
           headers: {
@@ -146,9 +146,21 @@ export default {
         console.log(err.message);
       }
     },
+    checkPillsLocal() {
+      if (JSON.parse(localStorage.getItem("localactiveuser"))) {
+        if (
+          JSON.parse(localStorage.getItem("localactiveuser")).carts.length > 0
+        ) {
+          this.pendedPills = JSON.parse(
+            localStorage.getItem("localactiveuser")
+          ).carts;
+        }
+      }
+    },
   },
   mounted() {
     // this.checkPills();
+    this.checkPillsLocal();
   },
 };
 </script>

@@ -1,22 +1,25 @@
 <template>
   <div class="single-cart-div flex-row">
+    <div v-if="!this.imgloaded" class="loading-img-div flex-row">
+      <i class="bi bi-file-image file-image-icon flex-row"></i>
+    </div>
     <div
+      v-show="this.imgloaded"
       class="item-img-div flex-row"
       @mouseenter="this.showViewBtn = true"
       @mouseleave="this.showViewBtn = false"
     >
       <img
+        :onload="this.imgloadedfun"
         class="item-img"
-        :src="`https://severkbashi.netlify.app/uploads/${this.cardItem.imgs[0]}`"
+        :src="`${this.SERVER_URL}/uploads/${this.cardItem.imgs[0]}`"
         alt=""
       />
       <button
         class="btn-item-reviw"
         v-show="this.showViewBtn"
         @click="reviewCardInfo"
-      >
-        review
-      </button>
+      ></button>
     </div>
     <div class="item-price-det-div m-2 flex-column text-muted">
       <div class="price-div mt-1 flex-row">
@@ -58,13 +61,19 @@ export default {
   components: {},
   data() {
     return {
+      // SERVER_URL: "http://localhost:300",
+      SERVER_URL: "https://severkbashi.netlify.app",
       showViewBtn: false,
       showCardInfo: false,
       activeImgInfo: 0,
+      imgloaded: false,
       //propreties
     };
   },
   methods: {
+    imgloadedfun() {
+      this.imgloaded = true;
+    },
     reviewCardInfo() {
       this.$emit("showCardInfo", this.cardItem._id);
     },
@@ -105,6 +114,17 @@ export default {
   padding: 2px;
   /* background-color: rgb(76, 210, 210); */
 }
+.loading-img-div {
+  width: 110px;
+  height: 110px;
+  /* width: 100%; */
+  border-radius: 7px;
+  background-color: rgba(232, 231, 231, 0.4);
+}
+.file-image-icon {
+  font-size: 40px;
+  color: rgb(94, 94, 94, 0.6);
+}
 .item-img-div {
   position: relative;
   flex: 0.2;
@@ -132,9 +152,9 @@ export default {
   border: 1.5px solid white;
   border: none;
   background-color: rgb(255, 255, 255, 0.2);
+  border-radius: 8px;
   /* bottom: 20px;
   border: 1.5px solid white;
-  border-radius: 8px;
   color: rgb(255, 251, 251);
   background-color: rgba(168, 168, 168, 0.5);
   padding: 3px 25px 3px 25px; */

@@ -1,6 +1,6 @@
 <template>
   <div class="single-cart-div flex-column">
-    <div v-show="!this.imgloaded" class="loading-img-div flex-row">
+    <div v-if="!this.imgloaded" class="loading-img-div flex-row">
       <i class="bi bi-file-image file-image-icon flex-row"></i>
     </div>
     <div
@@ -12,7 +12,7 @@
       <img
         :onload="this.imgloadedfun"
         class="item-img"
-        :src="`https://severkbashi.netlify.app/uploads/${this.cardItem.imgs[0]}`"
+        :src="`${this.SERVER_URL}/uploads/${this.cardItem.imgs[0]}`"
         alt=""
       />
       <button
@@ -61,6 +61,8 @@ export default {
   components: {},
   data() {
     return {
+      // SERVER_URL: "http://localhost:300",
+      SERVER_URL: "https://severkbashi.netlify.app/",
       showViewBtn: false,
       showCardInfo: false,
       activeImgInfo: 0,
@@ -200,6 +202,20 @@ export default {
     max-height: 600px;
     width: 350px;
   }
+  .loading-img-div {
+    height: 300px;
+    width: 300px;
+  }
+}
+@media (max-width: 390px) {
+  .item-img-div {
+    max-height: 600px;
+    width: 250px;
+  }
+  .loading-img-div {
+    height: 280px;
+    width: 280px;
+  }
 }
 @media (max-width: 500px) {
   .item-price-span {
@@ -208,12 +224,6 @@ export default {
   }
   .btn-add-to-cart {
     font-size: 14px;
-  }
-}
-@media (max-width: 390px) {
-  .item-img-div {
-    max-height: 600px;
-    width: 250px;
   }
 }
 </style>

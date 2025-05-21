@@ -60,16 +60,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.section {
-  /* min-height: 100vh; */
-  /* height: 100%; */
-  padding-top: 20px;
-  width: 100%;
-}
+
 .section-3 {
   height: 100%;
   width: 100%;
-  padding-bottom: 20px;
+  padding: 20px;
 }
 .cards-loading-div {
   width: 100%;
@@ -85,7 +80,7 @@ export default {
   max-height: 1500px;
   width: 100%;
   flex-wrap: wrap;
-  padding: 20px 0px 20px 0px;
+  padding: 5px;
   justify-content: space-evenly;
   overflow: scroll;
   overflow-y: auto;

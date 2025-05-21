@@ -87,32 +87,19 @@ export default {
     };
   },
   methods: {
-    previewImages(e) {
-      // this.newProduct.imgs = document.querySelector(".photos-input").files;
-      // let allFilesOk = true;
-      // for (let i = 0; i < this.newProduct.imgs.length; i++) {
-      //   if (!this.newProduct.imgs[i].type.includes("image"))
-      //     allFilesOk = false;
-      // }
-      // if (allFilesOk) {
-      //     console.log(this.newProduct.imgs.length);
-      // } else {
-      //   console.log("some files not image..");
-      // }
-    },
     async addFormSubmitted(e) {
       try {
-        const productAdded = await addProduct(this.newProduct);
-        console.log("product added successfuly..");
-        this.newProduct.imgs = document.querySelector(".photos-input").files;
-        for (let i = 0; i < this.newProduct.imgs.length; i++) {
-          const dataForm = new FormData();
-          dataForm.append("photo", this.newProduct.imgs[i]);
-          await addProductPhoto(productAdded._id, dataForm);
-          console.log("img added succesfully..");
-        }
-        this.newProduct = {};
-        document.querySelector(".photos-input").value = null;
+        // const productAdded = await addProduct(this.newProduct);
+        // console.log("product added successfuly..");
+        // this.newProduct.imgs = document.querySelector(".photos-input").files;
+        // for (let i = 0; i < this.newProduct.imgs.length; i++) {
+        //   const dataForm = new FormData();
+        //   dataForm.append("photo", this.newProduct.imgs[i]);
+        //   await addProductPhoto(productAdded._id, dataForm);
+        //   console.log("img added succesfully..");
+        // }
+        // this.newProduct = {};
+        // document.querySelector(".photos-input").value = null;
       } catch (err) {
         console.log(err.message);
       }

@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-import { getPills, getProduct } from "../../modal/modal.js";
+import { getPills, getProduct, SERVER_URL } from "../../modal/modal.js";
 import CartPill from "../CHComponents/cartPill.vue";
 export default {
   components: { CartPill },
@@ -71,7 +71,7 @@ export default {
   methods: {
     async checkPills() {
       try {
-        const user = await fetch("http://localhost:300/login/active/user", {
+        const user = await fetch(`${SERVER_URL}/login/active/user`, {
           credentials: "include",
           method: "GET",
           headers: {
@@ -106,9 +106,15 @@ export default {
         this.$emit("CloseMe");
       }
     },
+    checkPillsLocal() {
+      this.pendedPills = JSON.parse(
+        localStorage.getItem("localactiveuser")
+      ).carts;
+    },
   },
   mounted() {
-    this.checkPills();
+    // this.checkPills();
+    this.checkPillsLocal();
   },
 };
 </script>

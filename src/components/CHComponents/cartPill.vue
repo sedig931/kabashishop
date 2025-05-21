@@ -57,7 +57,10 @@
         </span>
       </div>
     </div>
-    <div class="downlod-pill-div flex-row text-muted border mt-1">
+    <div
+      :class="this.downloadingInvoice ? 'download-btn-hidden' : ''"
+      class="downlod-pill-div flex-row text-muted border mt-1"
+    >
       <button class="download-btn flex-row" @click="this.downloadPill">
         <i class="bi bi-download flex-row ms-2 me-2"></i>
         Download
@@ -71,12 +74,25 @@ export default {
   components: {},
   data() {
     return {
+      downloadingInvoice: false,
       //propreties
     };
   },
   methods: {
-    downloadPill() {
-      console.log("download pill");
+    async downloadPill() {
+      this.downloadingInvoice = true;
+      const confermedCart = document.querySelector(
+        ".customer-cart-confirmed-div"
+      );
+      var opt = {
+        margin: 0,
+        filename: "invoice.pdf",
+        image: { type: "jpeg", quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      };
+      await html2pdf().set(opt).from(confermedCart).save();
+      this.downloadingInvoice = false;
     },
   },
   mounted() {
@@ -85,6 +101,7 @@ export default {
     setTimeout(() => {
       document.querySelector(".done-icon-div").classList.remove("hidden-item");
     }, 5);
+    // this.downloadPill();
   },
 };
 </script>
@@ -108,7 +125,7 @@ export default {
   /* min-height: 250px; */
   /* max-height: 500px; */
   /* width: 500px; */
-  padding: 10px;
+  padding: 5px;
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
   justify-content: space-between;
@@ -118,6 +135,7 @@ export default {
   width: 300px;
   padding-top: 4px;
   padding-bottom: 4px;
+  margin: 5px;
   font-size: 11px;
   border-radius: 7px;
 }
@@ -175,5 +193,8 @@ export default {
 }
 .download-btn:hover {
   color: #5591e5;
+}
+.download-btn-hidden {
+  display: none;
 }
 </style>

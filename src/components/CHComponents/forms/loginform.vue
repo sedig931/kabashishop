@@ -2,7 +2,7 @@
   <!-- ----------------LOGIN FORM------------------------- -->
   <!-- ----------------LOGIN FORM------------------------- -->
   <!-- ----------------LOGIN FORM------------------------- -->
-  <form class="login-form p-3" @submit.prevent="this.login">
+  <form class="login-form p-3" @submit.prevent="this.loginlocal">
     <div class="single-lbl-input-div">
       <label class="lbl-formElement text-muted" for="nameInput">
         <span class="lbl-span">Email</span>
@@ -72,6 +72,21 @@ export default {
         this.authError = true;
         console.log("password or email errer.");
       }
+    },
+    loginlocal() {
+      localStorage.setItem(
+        "localactiveuser",
+        JSON.stringify({
+          _id: "123#548#631@",
+          fname: "youer first name",
+          email: this.user.email,
+          carts: [],
+        })
+      );
+      this.$router.push({
+        name: "home",
+        // params: { id: this.customer._id, lngname: this.lng.name },
+      });
     },
   },
   mounted() {},
