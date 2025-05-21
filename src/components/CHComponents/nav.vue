@@ -104,15 +104,13 @@
 </template>
 <script>
 // import component files..
-import { getPills, SERVER_URL } from "../../modal/modal.js";
 export default {
-  props: ["cartedProductsLength", "loggedIn"],
+  props: ["cartedProductsLength", "loggedIn", "pendedPills"],
   components: {},
   data() {
     return {
       dropdownItemsOn: false,
       filterValue: "Show all",
-      pendedPills: [],
       //propreties
     };
   },
@@ -130,37 +128,9 @@ export default {
         });
       }
     },
-    async checkPills() {
-      try {
-        const user = await fetch(`${SERVER_URL}/login/active/user`, {
-          credentials: "include",
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => data);
-        this.pendedPills = await getPills(user._id);
-      } catch (err) {
-        console.log(err.message);
-      }
-    },
-    checkPillsLocal() {
-      if (JSON.parse(localStorage.getItem("localactiveuser"))) {
-        if (
-          JSON.parse(localStorage.getItem("localactiveuser")).carts.length > 0
-        ) {
-          this.pendedPills = JSON.parse(
-            localStorage.getItem("localactiveuser")
-          ).carts;
-        }
-      }
-    },
   },
   mounted() {
-    // this.checkPills();
-    this.checkPillsLocal();
+    // nothing..
   },
 };
 </script>

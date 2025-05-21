@@ -71,16 +71,16 @@ export default {
   methods: {
     async checkPills() {
       try {
-        const user = await fetch(`${SERVER_URL}/login/active/user`, {
-          credentials: "include",
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => data);
-        this.pendedPills = await getPills(user._id);
+        // const user = await fetch(`${SERVER_URL}/login/active/user`, {
+        //   credentials: "include",
+        //   method: "GET",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // })
+        //   .then((res) => res.json())
+        //   .then((data) => data);
+        // this.pendedPills = await getPills(user._id);
 
         for (let y = 0; y < this.pendedPills.length; y++) {
           let productsInfo = [];

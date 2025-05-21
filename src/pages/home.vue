@@ -2,11 +2,12 @@
   <div class="allhome-div">
     <Nav
       :cartedProductsLength="this.cartedProducts.length"
+      :loggedIn="this.activeUser ? true : false"
+      :pendedPills="this.pendedPills"
       @showCustomerCart="this.toggleCustomerCart"
       @showCustomerPills="toggleCustomerPills"
       @logoutNow="this.logoutlocal"
       @filterProducts="this.filterProducts"
-      :loggedIn="this.activeUser ? true : false"
     />
     <Section1
       :top10Items="this.top10Items"
@@ -31,6 +32,7 @@
       v-if="this.showCustomerCart"
       :cartedProducts="this.cartedProducts"
       :activeUser="this.activeUser"
+      :pendedPills="this.pendedPills"
       @cartConfirmed="this.cartConfirmed"
       @showCustomerCart="this.showCustomerCart = !this.showCustomerCart"
       @dropItem="this.dropItem"
@@ -59,7 +61,7 @@ import Nav from "../components/CHComponents/nav.vue";
 import CustomerCart from "../components/CHComponents/customerCart.vue";
 import ProductInfo from "../components/CHComponents/productInfo.vue";
 import Pills from "../components/CHComponents/customerPills.vue";
-import { getProducts } from "../modal/modal.js";
+import { getProducts, getPills } from "../modal/modal.js";
 export default {
   components: {
     Nav,
@@ -85,6 +87,7 @@ export default {
       top10Items: [],
       cartedProducts: [],
       cardItemInfo: {},
+      pendedPills: [],
       // gap gap gap  ---------------&***************-----------------
     };
   },
@@ -119,12 +122,15 @@ export default {
         JSON.stringify(this.cartedProducts)
       );
     },
-    cartConfirmed() {
-      localStorage.setItem("customer-cart", JSON.stringify([]));
-      this.cartedProducts = [];
-      this.$router.push({
-        name: "home",
-      });
+    async cartConfirmed() {
+      try {
+        localStorage.setItem("customer-cart", JSON.stringify([]));
+        this.cartedProducts = [];
+        // this.pendedPills = await getPills(this.activeUser._id);
+        this.checkPillsLocal();
+      } catch (err) {
+        console.log(err.message);
+      }
     },
     addProductToCart(proID) {
       if (
@@ -187,6 +193,8 @@ export default {
           .then((res) => res.json())
           .then((data) => data);
         this.activeUser = user;
+        // this.pendedPills = await getPills(this.activeUser._id);
+        this.checkPillsLocal();
       } catch (err) {
         console.log(err.message);
       }
@@ -212,6 +220,17 @@ export default {
     initLocalUser() {
       if (JSON.parse(localStorage.getItem("localactiveuser"))) {
         this.activeUser = JSON.parse(localStorage.getItem("localactiveuser"));
+      }
+    },
+    checkPillsLocal() {
+      if (JSON.parse(localStorage.getItem("localactiveuser"))) {
+        if (
+          JSON.parse(localStorage.getItem("localactiveuser")).carts.length > 0
+        ) {
+          this.pendedPills = JSON.parse(
+            localStorage.getItem("localactiveuser")
+          ).carts;
+        }
       }
     },
   },

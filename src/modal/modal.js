@@ -63,7 +63,6 @@ export const getProducts = async function () {
             {
                 credentials: "include",
                 method: "GET",
-                // mode: 'no-cors',
                 headers: {
                     "Content-Type": "application/json",
                 },
